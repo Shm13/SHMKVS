@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+#import socket
+import threading
+import socketserver
+
+class MyTCPHandler(socketserver.BaseRequestHandler):
+    def handle(self):
+        self.data = self.request.recv(1024).strip()
+        print("{} wrote:".format(self.client_address[0]))
+        print(self.data)
+        self.request.sendall(self.data.upper())
+
 class database:
     def __init__(self, name):
         self.name = name
@@ -28,14 +39,10 @@ class database:
         pass
     pass
 
-class server:
-    pass
-
 # Debug:
 if __name__ == '__main__':
-    db = database('test')
-    db.create('obj0')
-    db.create('obj1')
-    db.create('obj2')
+    HOST, PORT = 'localhost', 9999
 
+    server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
+    server.serve_forever()
     pass 
