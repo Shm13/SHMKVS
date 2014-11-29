@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#import socket
 import threading
 import socketserver
 
@@ -10,7 +9,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.data = self.request.recv(1024).strip()
         print("{} wrote:".format(self.client_address[0]))
         print(self.data)
-        self.request.sendall(self.data.upper())
+        self.request.sendall(self.data)
 
 class database:
     def __init__(self, name):
