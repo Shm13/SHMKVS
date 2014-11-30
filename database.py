@@ -5,19 +5,19 @@ class Database:
     def __init__(self, name):
         self.name = name
         self.list = {}
-    def create(self, obj, key=0):
+    def create(self, value, key=0):
         for x in self.list.keys():
             if key==x:
                 key+=1
                 continue
             else:
                 break
-        self.list[key]=obj
+        self.list[key]=value
         return True
     def read(self, key):
         return self.list[key]
-    def update(self, obj, key):
-        self.list.update({key:obj})
+    def update(self, value, key):
+        self.list.update({key:value})
         return True
     def delete(self, key):
         temp = self.list[key]
@@ -28,7 +28,7 @@ class Database:
         # Serialization here:
         pass
     def find(self):
-        # Find by object parametrs here:
+        # Find by value parametrs here:
         pass
     pass
 
