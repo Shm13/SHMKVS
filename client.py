@@ -5,10 +5,11 @@ import socket
 import sys
 import pickle
 
-HOST, PORT = 'localhost', 9999
 
 class Client:
-    def __init__(self):
+    def __init__(self, host='localhost', port='9999', *args, **kwargs):
+        self.HOST = host
+        self.PORT = port
         pass
         
     def create(self, value, key=0):
@@ -32,7 +33,7 @@ class Client:
 
         result = False
         try:
-            self.sock.connect((HOST, PORT)) # Open 
+            self.sock.connect((self.HOST, self.PORT)) # Open 
             self.sock.sendall(pickle.dumps(data)) # Serialize and send command with value.
 
             recieved = self.sock.recv(1024) # Recive server feedback.
@@ -43,7 +44,15 @@ class Client:
 
 # Debug:
 if __name__ == '__main__':
-    c = Client()
+    HOST, PORT = 'localhost', 9999
+    
+    if len(sys.argv)==2:
+        PORT = int(sys.argv[1].strip())
+    if len(sys.argv)==3:
+        HOST = str(sys.argv[1].strip())
+        PORT = int(sys.argv[2].strip())
+
+    c = Client(HOST, PORT)
     print (c.create('test'))
     print (c.create({1:'a'}))
     print (c.create('test2'))

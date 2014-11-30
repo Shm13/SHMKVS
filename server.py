@@ -4,6 +4,7 @@
 import threading
 import socketserver
 import pickle
+import sys
 from database import Database
 
 db = Database('testing')
@@ -15,10 +16,6 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         print("Received %d byte: %s"%(len(self.data),self.data))
 
         result = self.parser(self.data)
-        print("DB:")
-
-        for x in db.list:
-            print( db.read(x))
 
         self.request.sendall(result)
 
@@ -39,6 +36,9 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
 # Debug:
 if __name__ == '__main__':
     HOST, PORT = 'localhost', 9999
-
+    
+    if len(sys.argv)==2:
+        PORT = int(sys.argv[1].strip())
+        
     server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
     server.serve_forever()
