@@ -20,25 +20,21 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         for x in db.list:
             print( db.read(x))
 
-        #print(pickle.loads(self.data))
         self.request.sendall(result)
 
     def parser(self, raw_data):
         data = pickle.loads(raw_data)
         if data['command']=='create':
             return db.create(data['value'],data['key'])
-            """
         elif data['command']=='read':
-            return db.read(data.id)
+            return db.read(data['key'])
         elif data['command']=='update':
-            return db.update(data.obj,data.id)
+            return db.update(data['value'],data['key'])
         elif data['command']=='delete':
-            return db.delete(data.id)
+            return db.delete(data['key'])
         else:
             # Unknown command.
             pass
-            """
-        
 
 # Debug:
 if __name__ == '__main__':

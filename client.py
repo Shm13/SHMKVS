@@ -5,9 +5,6 @@ import socket
 import sys
 import pickle
 
-Obj={1:'a',2:'b'}
-
-
 HOST, PORT = 'localhost', 9999
 
 class Client:
@@ -35,11 +32,11 @@ class Client:
 
         result = False
         try:
-            self.sock.connect((HOST, PORT))
+            self.sock.connect((HOST, PORT)) # Open 
             self.sock.sendall(pickle.dumps(data)) # Serialize and send command with value.
 
-            recieved = self.sock.recv(1024)
-            result = (pickle.loads(recieved))
+            recieved = self.sock.recv(1024) # Recive server feedback.
+            result = (pickle.loads(recieved)) # Deserialize received data.
         finally:
             self.sock.close()
             return(result)
@@ -52,8 +49,14 @@ if __name__ == '__main__':
     print (c.create('test2'))
     print (c.create('test3'))
 
+    print (c.read(0))
+    print (c.read(1))
+    print (c.read(2))
+    print (c.read(2))
+    print (c.read(3))
 
-    #print (c.create(Obj,10))
-    #print (c.read(10))
-    #print (c.update(Obj, 10))
-    #print (c.delete(100))
+    Obj={1:'a',2:'b'}
+    print (c.update(Obj, 1))
+    print (c.read(0))
+    print (c.delete(1))
+    print (c.read(1))
