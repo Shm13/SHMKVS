@@ -11,26 +11,33 @@ db = Database('testing')
 class MyTCPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         self.data = self.request.recv(1024).strip()
-        print("{} wrote:".format(self.client_address[0]))
-        print(self.data)
-        print(pickle.loads(self.data))
-        self.request.sendall(self.data)
+        print("Sender: %s"%(self.client_address[0]))
+        print("Received %d byte: %s"%(len(self.data),self.data))
+
+        result = self.parser(self.data)
+        print("DB:")
+
+        for x in db.list:
+            print( db.read(x))
+
+        #print(pickle.loads(self.data))
+        self.request.sendall(result)
 
     def parser(self, raw_data):
         data = pickle.loads(raw_data)
         if data['command']=='create':
-            db.create(data.obj,data.id)
+            return db.create(data['value'],data['key'])
+            """
         elif data['command']=='read':
-            temp = db.read(data.id)
-            return{'obj':temp,'key':data.key}
+            return db.read(data.id)
         elif data['command']=='update':
-            db.update(data.obj,data.id)
+            return db.update(data.obj,data.id)
         elif data['command']=='delete':
-            temp = db.delete(data.id)
-            return{'obj':temp,'key':data.key}
+            return db.delete(data.id)
         else:
             # Unknown command.
             pass
+            """
         
 
 # Debug:

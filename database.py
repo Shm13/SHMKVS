@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import pickle
+
+# All value in DB must be serialize
+db_True=pickle.dumps(True)
+db_False=pickle.dumps(False)
+
 class Database:
     def __init__(self, name):
         self.name = name
@@ -12,13 +18,13 @@ class Database:
                 continue
             else:
                 break
-        self.list[key]=value
-        return True
+        self.list[key]=pickle.dumps(value)
+        return db_True
     def read(self, key):
         return self.list[key]
     def update(self, value, key):
-        self.list.update({key:value})
-        return True
+        self.list.update({key:pickle.dumps(value)})
+        return db_True
     def delete(self, key):
         temp = self.list[key]
         del self.list[key]
@@ -35,6 +41,6 @@ class Database:
 # Debug:
 if __name__ == '__main__':
     db = Database(name = 'tester')
-    db.create('test')
+    print (db.create('test'))
 
     print(db.delete(0))
