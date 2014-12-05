@@ -41,4 +41,11 @@ if __name__ == '__main__':
         PORT = int(sys.argv[1].strip())
         
     server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
-    server.serve_forever()
+    try:
+        print ("server start")
+        server.serve_forever()
+    except (KeyboardInterrupt):
+        pass
+    finally:
+        print ("\nserver stop")
+        server.server_close()
